@@ -13,8 +13,7 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 
-	<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@d4cbd36122efc8d17152b4177ed0e12165305441/dist/css/L.Control.OpenCageData.Search.min.css" />-->
-	<link rel="stylesheet" href="leaflet-opencage-search-master/dist/css/L.Control.OpenCageSearch.dev.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@d4cbd36122efc8d17152b4177ed0e12165305441/dist/css/L.Control.OpenCageData.Search.min.css" />
 
 	<link rel="icon" href="icon.png">
 
@@ -27,8 +26,7 @@
 
 	<script src="https://code.jquery.com/jquery-latest.js"></script>
 	
-	<!--<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@d4cbd36122efc8d17152b4177ed0e12165305441/dist/js/L.Control.OpenCageSearch.min.js"></script>-->
-	<script src="leaflet-opencage-search-master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@d4cbd36122efc8d17152b4177ed0e12165305441/dist/js/L.Control.OpenCageSearch.min.js"></script>
 	
 	<style>
 		#map{
@@ -68,9 +66,9 @@
 		control.markGeocode = function(result) {
 			var bbox = result.bbox;
 			L.polygon([
-				//bbox.getSouthEast(),
+				bbox.getSouthEast(),
 				bbox.getNorthEast(),
-				//bbox.getNorthWest(),
+				bbox.getNorthWest(),
 				bbox.getSouthWest()
 			]).addTo(map);
 		};    
