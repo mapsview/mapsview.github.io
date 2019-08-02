@@ -92,7 +92,7 @@
   			shadowSize: [41, 41]
 			});
 
-			navigator.geolocation.getCurrentPosition(function(location) {
+			navigator.geolocation.watchPosition(function(location) {
 				latlngcur = new L.LatLng(location.coords.latitude, location.coords.longitude);
 
 				mymap.setView(latlngcur);
@@ -118,17 +118,6 @@
 
 		clickPop = L.marker(e.latlng, {icon: greenIcon}).addTo(mymap);
 		clickPop.bindPopup("Position: " + e.latlng + " .<a id='popbtn' href='https://www.theuselessweb.com'>Route</a>");
-
-		navigator.geolocation.watchPosition(function(location){
-			latlngcur = new L.LatLng(location.coords.latitude, location.coords.longitude);
-
-			mymap.setView(latlngcur);
-
-			current = L.marker(latlngcur, {icon: redIcon}).addTo(mymap);
-			current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
-
-			console.log(latlngcur);
-		});
 
 		var control = L.Routing.control({
 			waypoints: [
