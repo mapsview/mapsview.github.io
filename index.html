@@ -56,6 +56,8 @@
 
 		var control = L.Control.openCageSearch(options).addTo(mymap);
 
+		L.control.scale().addTo(mymap);
+
 		control.markGeocode = function(result) {
     		var bbox = result.bbox;
     		L.polygon([
@@ -99,7 +101,6 @@
 				current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
 
 				mymap.setView(current.latlng);
-				mymap.setZoom(10);
 
 				EasterEgg();
 				ServerRequest();
