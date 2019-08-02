@@ -98,7 +98,8 @@
 				current = L.marker(latlngcur, {icon: redIcon}).addTo(mymap);
 				current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
 
-				mymap.setView(location.latLng);
+				mymap.setView(current.latlng);
+				mymap.setZoom(10);
 
 				EasterEgg();
 				ServerRequest();
