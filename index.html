@@ -100,7 +100,7 @@
 				current = L.marker(latlngcur, {icon: redIcon}).addTo(mymap);
 				current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
 
-				console.log(latlngcur)
+				alert("Got Position:\n" + location.coords.latitude + "\n" + location.coords.longitude)
 
 				EasterEgg();
 				//RentRequest();
