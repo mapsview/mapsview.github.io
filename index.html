@@ -60,6 +60,7 @@
     	expand: 'click',
 		};
 
+		var geocoder = L.Control.OpenCageSearch.geocoder(options);
 		var control = L.Control.openCageSearch(options).addTo(mymap);
 
 		control.markGeocode = function(result) {
