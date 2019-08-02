@@ -97,8 +97,7 @@
 			navigator.geolocation.getCurrentPosition(function(location){
 				latlngcur = new L.LatLng(location.coords.latitude, location.coords.longitude);
 
-				current = L.marker(latlngcur, {icon: redIcon})//.addTo(mymap);
-				mymap.addLayer(current);
+				current = L.marker(latlngcur, {icon: redIcon}).addTo(mymap);
 				current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
 
 				mymap.setView(latlngcur);
@@ -106,21 +105,6 @@
 				EasterEgg();
 				ServerRequest();
 			})
-
-			navigator.geolocation.watchPosition(function(location) {
-				latlngcur = new L.LatLng(location.coords.latitude, location.coords.longitude);
-
-				mymap.removeLayer(current);
-
-				current = L.marker(latlngcur, {icon: redIcon})//.addTo(mymap);
-				mymap.addLayer(current);
-				current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
-
-				mymap.setView(latlngcur);
-
-				EasterEgg();
-				ServerRequest();
-				});
 		}
 
 	function onMapClick(e){
