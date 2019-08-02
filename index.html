@@ -49,6 +49,17 @@
 		accessToken: 'pk.eyJ1IjoibWF0aG1hZGEiLCJhIjoiY2p4Z2ZkOTc1MTN2azQwbnpoa2p4ZGNtcSJ9.33NqEzF14XMjksrrowcp2Q'
 		}).addTo(mymap);
 
+		var options = {
+    	key: 'a5897c2a8cda41e3a32fe994ccdd71c5', // your OpenCage API key
+    	limit: 5, // number of results to be displayed
+    	position: 'topright',
+    	placeholder: 'Suchen...', // the text in the empty search box
+    	errorMessage: 'Nichts gefunden.',
+    	showResultIcons: false,
+    	collapsed: true,
+    	expand: 'click',
+		};
+
 		var control = L.Control.openCageSearch(options).addTo(mymap);
 
 		control.markGeocode = function(result) {
@@ -59,17 +70,6 @@
 				bbox.getNorthWest(),
 				bbox.getSouthWest()
 			]).addTo(map);
-		};
-
-		var options = {
-    	key: 'a5897c2a8cda41e3a32fe994ccdd71c5', // your OpenCage API key
-    	limit: 5, // number of results to be displayed
-    	position: 'topright',
-    	placeholder: 'Suchen...', // the text in the empty search box
-    	errorMessage: 'Nichts gefunden.',
-    	showResultIcons: false,
-    	collapsed: true,
-    	expand: 'click',
 		};    
 
 		L.control.scale().addTo(mymap);
