@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin=""/>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@d4cbd36122efc8d17152b4177ed0e12165305441/dist/css/L.Control.OpenCageData.Search.min.css" />
+
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	crossorigin=""></script>
+	
+	<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+	<script src="https://code.jquery.com/jquery-latest.js"></script>
+	
+	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@d4cbd36122efc8d17152b4177ed0e12165305441/dist/js/L.Control.OpenCageSearch.min.js"></script>
+	
+	<style>
+		#map{
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	</style>
+</head>
+<body onload="getLocation();">
+	<div id="map"></div>
+	<script>
+		var mymap = L.map('map').setView([49.1249712, 8.5844108], 13);
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		maxZoom: 18,
+		id: 'mapbox.streets',
+		accessToken: 'pk.eyJ1IjoibWF0aG1hZGEiLCJhIjoiY2p4Z2ZkOTc1MTN2azQwbnpoa2p4ZGNtcSJ9.33NqEzF14XMjksrrowcp2Q'
+		}).addTo(mymap);
+
+		var options = {
+    	key: 'a5897c2a8cda41e3a32fe994ccdd71c5', // your OpenCage API key
+    	limit: 5, // number of results to be displayed
+    	position: 'topright',
+    	placeholder: 'Suchen...', // the text in the empty search box
+    	errorMessage: 'Nichts gefunden.',
+    	showResultIcons: false,
+    	collapsed: true,
+    	expand: 'click',
+		};    
+
+		var control = L.Control.openCageSearch(options).addTo(mymap);
+
+		control.markGeocode = function(result) {
+    		var bbox = result.bbox;
+    		L.polygon([
+         		bbox.getSouthEast(),
+         		bbox.getNorthEast(),
+         		bbox.getNorthWest(),
+         		bbox.getSouthWest()
+    		]).addTo(mymap	);
+		};
+
+		var current;
+		var clickPop;
+		var bike;
+		var bikeAmount;
+
+		var latlngcur;
+
+		function getLocation(){
+			var redIcon = new L.Icon({
+  			iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  			shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  			iconSize: [25, 41],
+  			iconAnchor: [12, 41],
+  			popupAnchor: [1, -34],
+  			shadowSize: [41, 41]
+			});
+
+			var blueIcon = new L.Icon({
+  			iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+  			shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  			iconSize: [25, 41],
+  			iconAnchor: [12, 41],
+  			popupAnchor: [1, -34],
+  			shadowSize: [41, 41]
+			});
+
+			navigator.geolocation.getCurrentPosition(function(location) {
+				latlngcur = new L.LatLng(location.coords.latitude, location.coords.longitude);
+
+				mymap.setView(latlngcur);
+
+				current = L.marker(latlngcur, {icon: redIcon}).addTo(mymap);
+				current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
+
+				EasterEgg();
+				//RentRequest();
+				ServerRequest();
+				});
+		}
+
+	function onMapClick(e){
+		var greenIcon = new L.Icon({
+  		iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  		iconSize: [25, 41],
+  		iconAnchor: [12, 41],
+  		popupAnchor: [1, -34],
+  		shadowSize: [41, 41]
+		});
+
+		clickPop = L.marker(e.latlng, {icon: greenIcon}).addTo(mymap);
+		clickPop.bindPopup("Position: " + e.latlng + " .<a id='popbtn' href='https://www.theuselessweb.com'>Route</a>");
+
+		var control = L.Routing.control({
+			waypoints: [
+				L.latLng(latlngcur),
+				L.latLng(e.latlng)
+			],
+			routeWhileDragging: true
+		}).addTo(mymap);
+		control.route({costring: "pedestrian"});
+	}
+	mymap.on('click', onMapClick);
+
+	function EasterEgg(){
+		var blackIcon = new L.Icon({
+  		iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+  		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  		iconSize: [25, 41],
+  		iconAnchor: [12, 41],
+  		popupAnchor: [1, -34],
+  		shadowSize: [41, 41]
+		});
+
+		var httf = L.marker([48.7994019, 9.8045704], {icon: blackIcon}).addTo(mymap);
+		httf.bindPopup("HackToTheFuture").openPopup();
+	}
+
+	function ServerRequest(){
+		console.log("ServerRequest called");
+		$.getJSON( "http://10.10.11.99:7000/data?key=ucuyic", function( data ) {
+			bikeAmount = data.data;
+			console.log(bikeAmount);
+			bike = new L.marker([49.0068901, 8.4036527]).addTo(mymap);		
+			console.log(bikeAmount);
+			if(bikeAmount != 0){
+				bike.bindPopup("Fahrradstation | Übrige: " + bikeAmount + " | <a id='reservebtn' onclick='RentRequest();'>Reservieren</a>");		
+			} else{
+				bike.bindPopup("Fahrradstationen | Keine verfügbaren Fahrräder (" + bikeAmount + ")");
+			}
+		});
+	}
+
+	function updateBikePopup(){
+		if(bikeAmount != 0){
+			bike.bindPopup("Fahrradstation | Übrige: " + bikeAmount + " | <a id='reservebtn' onclick='RentRequest();'>Reservieren</a>")
+		} else{
+			bike.bindPopup("Fahrradstationen | Keine verfügbaren Fahrräder (" + bikeAmount + ")");
+		}
+	}
+
+	function RentRequest(){
+		console.log("RentRequest called");
+		$.ajax({
+			url: 'http://10.10.11.99:7000/rentbike',
+			type: 'PUT',
+			success: function(data) {
+				if(data.data == -1) // ERROR
+					console.log("ERROR");
+				else {
+					//SUCCESS 
+					console.log("SUCCESS");
+					updateBikePopup();
+					alert("Fahrrad wurde reserviert");					
+				}
+			}			
+		});
+	}
+	</script>
+</body>
+</html>
