@@ -97,7 +97,7 @@
 			navigator.geolocation.watchPosition(function(location) {
 				latlngcur = new L.LatLng(location.coords.latitude, location.coords.longitude);
 
-				current = L.marker(latlngcur, {icon: redIcon}).addTo(mymap);
+				var current = L.marker(latlngcur, {icon: redIcon}).addTo(mymap);
 				current.bindPopup("Aktuelle Position:" + latlngcur).openPopup();
 
 				mymap.setView(latlngcur);
