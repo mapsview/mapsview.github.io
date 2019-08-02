@@ -49,6 +49,18 @@
 		accessToken: 'pk.eyJ1IjoibWF0aG1hZGEiLCJhIjoiY2p4Z2ZkOTc1MTN2azQwbnpoa2p4ZGNtcSJ9.33NqEzF14XMjksrrowcp2Q'
 		}).addTo(mymap);
 
+		var control = L.Control.openCageSearch(options).addTo(mymap);
+
+		control.markGeocode = function(result) {
+			var bbox = result.bbox;
+			L.polygon([
+				bbox.getSouthEast(),
+				bbox.getNorthEast(),
+				bbox.getNorthWest(),
+				bbox.getSouthWest()
+			]).addTo(map);
+		};
+
 		var options = {
     	key: 'a5897c2a8cda41e3a32fe994ccdd71c5', // your OpenCage API key
     	limit: 5, // number of results to be displayed
@@ -60,19 +72,7 @@
     	expand: 'click',
 		};    
 
-		var control = L.Control.openCageSearch(options).addTo(mymap);
-
 		L.control.scale().addTo(mymap);
-
-		control.markGeocode = function(result) {
-    		var bbox = result.bbox;
-    		L.polygon([
-         		bbox.getSouthEast(),
-         		bbox.getNorthEast(),
-         		bbox.getNorthWest(),
-         		bbox.getSouthWest()
-    		]).addTo(mymap);
-		};
 
 		var current;
 		var clickPop;
