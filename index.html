@@ -68,9 +68,9 @@
 		control.markGeocode = function(result) {
 			var bbox = result.bbox;
 			L.polygon([
-				bbox.getSouthEast(),
+				//bbox.getSouthEast(),
 				bbox.getNorthEast(),
-				bbox.getNorthWest(),
+				//bbox.getNorthWest(),
 				bbox.getSouthWest()
 			]).addTo(map);
 		};    
