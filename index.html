@@ -55,6 +55,11 @@
             expand: 'click',
         };
 
+        var searchLayer = L.layerGroup().addTo(mymap);
+        mymap.addControl(new L.Control.Search({
+            layer: searchLayer
+        }));
+
         var current;
         var clickPop;
         var bike;
