@@ -55,21 +55,6 @@
             expand: 'click',
         };
 
-        var geocoder = L.Control.OpenCageSearch.geocoder(options);
-        var control = L.Control.openCageSearch(options).addTo(mymap);
-
-        control.markGeocode = function(result) {
-            var bbox = result.bbox;
-            L.polygon([
-                bbox.getSouthEast(),
-                bbox.getNorthEast(),
-                bbox.getNorthWest(),
-                bbox.getSouthWest()
-            ]).addTo(map);
-        };
-
-        L.control.scale().addTo(mymap);
-
         var current;
         var clickPop;
         var bike;
