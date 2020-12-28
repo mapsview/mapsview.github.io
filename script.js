@@ -3,7 +3,6 @@ var focused = true;
 var focusButton;
 var watchId;
 var carMarker;
-var markerLayer;
 var routingPoints = new Array();
 var searchControl;
 var gLocation;
@@ -39,10 +38,12 @@ function gotLocation(location) {
           ])
             .bindPopup()
             .addTo(map);
+          map.addLayer(carMarker);
         } else {
           carMarker = L.marker(result.latlng)
             .addTo(map)
             .bindPopup("<b>Ihr Standort:</b><br>" + result.address.Match_addr);
+          map.addLayer(carMarker);
         }
       });
     if (focused) {
@@ -133,8 +134,6 @@ var baseMaps = {
 normalMap.addTo(map);
 
 L.control.layers(baseMaps, null).addTo(map);
-
-markerLayer = new L.FeatureGroup().addTo(map);
 
 focusButton = L.easyButton("fas fa-crosshairs", function (btn, map) {
   focused = true;
