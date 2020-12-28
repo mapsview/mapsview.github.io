@@ -213,8 +213,4 @@ map.on("movestart", function (e) {
   $(".easy-button-container").removeClass("display-none");
 });
 
-setInterval(function() {
-  document.getElementsByClassName("leaflet-pane leaflet-marker-pane")[0].innerHTML = "";
-}, 5000);
-
 getLocation();
