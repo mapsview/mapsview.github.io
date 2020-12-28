@@ -23,6 +23,7 @@ function gotLocation(location) {
   if (watchLocation) {
     if (carMarker != null) {
       map.removeLayer(carMarker);
+      carMarker.remove();
     }
     /*carMarker = L.marker([location.coords.latitude, location.coords.longitude])
       .bindPopup()
