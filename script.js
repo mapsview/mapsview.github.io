@@ -3,6 +3,7 @@ var focused = true;
 var focusButton;
 var watchId;
 var carMarker;
+var markerLayer;
 var routingPoints = new Array();
 var searchControl;
 var gLocation;
@@ -132,6 +133,8 @@ var baseMaps = {
 normalMap.addTo(map);
 
 L.control.layers(baseMaps, null).addTo(map);
+
+markerLayer = new L.FeatureGroup().addTo(map);
 
 focusButton = L.easyButton("fas fa-crosshairs", function (btn, map) {
   focused = true;
